@@ -19,7 +19,7 @@
     <p class="count" aria-live="polite">{{ visible.length }} products</p>
 
     <div class="grid">
-      <ProductCard v-for="(p, i) in visible" :key="p.slug" :product="p" :eager="i < 4" />
+      <ProductCard v-for="(p, i) in visible" :key="p.slug" :product="p" :eager="i < 2" />
     </div>
   </div>
 </template>

@@ -8,7 +8,6 @@
         height="400"
         :loading="eager ? 'eager' : 'lazy'"
         :fetchpriority="eager ? 'high' : undefined"
-        decoding="async"
       >
       <h2 class="name">{{ product.name }}</h2>
     </NuxtLink>

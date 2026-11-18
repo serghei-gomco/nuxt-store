@@ -15,6 +15,17 @@ export default defineNuxtConfig({
     },
   },
 
+  experimental: {
+    // No useAsyncData in this app, so a separate _payload.json per page is an extra request for nothing.
+    // The tiny state is inlined into the HTML instead.
+    payloadExtraction: false,
+    defaults: {
+      // Prefetch a page's JS on hover/focus/touch instead of whenever a link scrolls into view:
+      // the grid has 12+ links, and on mobile data we don't want to download every page up front.
+      nuxtLink: { prefetchOn: { visibility: false, interaction: true } },
+    },
+  },
+
   // Static site: `nuxt generate` crawls links from "/" and prerenders every product page.
   nitro: {
     prerender: {
