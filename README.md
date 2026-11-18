@@ -4,6 +4,8 @@ A small, fast storefront built with **Nuxt 3**, TypeScript and Pinia. Fictional 
 a personal portfolio project by Serghei Gomco. The goal was a fully static shop that scores 95+ in Lighthouse
 (mobile) with zero layout shift; see [REPORT.md](REPORT.md) for the measurements.
 
+**Live demo:** https://nuxt-store-kappa.vercel.app
+
 - Catalogue grid with a category filter in the URL (`/?category=kitchen`)
 - Product pages `/products/[slug]`, all prerendered
 - Cart in Pinia, saved in `localStorage`, with no hydration mismatch and no header jump

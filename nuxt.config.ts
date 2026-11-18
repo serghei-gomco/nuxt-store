@@ -15,6 +15,17 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    public: {
+      // Absolute base for og:image. Vercel sets VERCEL_PROJECT_PRODUCTION_URL during the build.
+      siteUrl:
+        process.env.NUXT_PUBLIC_SITE_URL ||
+        (process.env.VERCEL_PROJECT_PRODUCTION_URL
+          ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+          : 'http://localhost:3000'),
+    },
+  },
+
   experimental: {
     // No useAsyncData in this app, so a separate _payload.json per page is an extra request for nothing.
     // The tiny state is inlined into the HTML instead.

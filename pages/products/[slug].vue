@@ -44,12 +44,14 @@ function addToCart() {
   added.value = true
 }
 
+const { siteUrl } = useRuntimeConfig().public
+
 useSeoMeta({
   title: product.name,
   description: product.summary,
   ogTitle: `${product.name} — Quietfield Goods (demo)`,
   ogDescription: product.summary,
-  ogImage: product.image,
+  ogImage: `${siteUrl}${product.image}`,
 })
 </script>
 

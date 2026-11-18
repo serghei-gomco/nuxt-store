@@ -30,6 +30,16 @@ CLS was already 0 on all three.
 
 Lab scores vary a little between runs: for `/` the LCP was 1.8–2.0 s across runs of the same build.
 
+### Live check on Vercel (18.11.2026)
+
+Same Lighthouse 13.6.0 mobile preset, one run per page, against https://nuxt-store-kappa.vercel.app:
+
+| Page | Performance | Accessibility | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|
+| `/` | **100** | 100 | 100 | 1.2 s | **0** | 10 ms |
+| `/?category=desk` | **100** | 100 | 100 | 0.8 s | **0** | 10 ms |
+| `/products/brass-desk-lamp` | **100** | 100 | 100 | 0.8 s | **0** | 0 ms |
+
 ## What was done for speed, and why
 
 **Layout shift (CLS)**
