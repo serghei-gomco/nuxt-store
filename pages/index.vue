@@ -19,7 +19,7 @@
     <p class="count" aria-live="polite">{{ visible.length }} products</p>
 
     <div class="grid">
-      <ProductCard v-for="(p, i) in visible" :key="p.slug" :product="p" :eager="i < 2" />
+      <ProductCard v-for="(p, i) in visible" :key="p.slug" :product="p" :eager="i < 4" />
     </div>
   </div>
 </template>
@@ -37,20 +37,7 @@ const selected = computed(() => (mounted.value ? parseCategory(route.query.categ
 const visible = computed(() => filterProducts(products, selected.value))
 
 onMounted(() => {
-  // The tiny head script below hid other categories before first paint; Vue takes over from here.
-  delete document.documentElement.dataset.category
   mounted.value = true
-})
-
-// On a direct visit to /?category=kitchen: mark <html> before the first paint, and hide other
-// categories with CSS. Without this the full grid would flash and then collapse (layout shift).
-const hideCss = categories
-  .map(c => `html[data-category="${c.id}"] .card:not([data-category="${c.id}"]){display:none}`)
-  .join('')
-
-useHead({
-  script: [{ innerHTML: 'try{var c=new URLSearchParams(location.search).get("category");if(c)document.documentElement.dataset.category=c}catch(e){}' }],
-  style: [{ innerHTML: hideCss }],
 })
 
 useSeoMeta({

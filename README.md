@@ -1,3 +1,5 @@
+> This branch is the same store with the performance fixes removed, for comparison. See [main](../../tree/main).
+
 # Quietfield Goods — Nuxt 3 storefront demo
 
 A small, fast storefront built with **Nuxt 3**, TypeScript and Pinia. Fictional products, no real orders —
