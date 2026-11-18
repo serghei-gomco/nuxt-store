@@ -9,10 +9,11 @@
   "scripts": {
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "npx serve .output/public",
+    "preview": "npx -y serve@14 .output/public -l 4173",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lighthouse": "bash scripts/lighthouse.sh"
   },
   "dependencies": {
     "@pinia/nuxt": "0.11.2",

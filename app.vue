@@ -26,8 +26,8 @@ useHead({
   --bg: #faf7f2;
   --surface: #ffffff;
   --text: #1f2421;
-  --muted: #545b56; /* 7:1 on --bg */
-  --accent: #2f4a3a; /* 9:1 with white text */
+  --muted: #545b56; /* 6.5:1 on --bg (WCAG AA needs 4.5:1) */
+  --accent: #2f4a3a; /* 9.7:1 with white text */
   --accent-soft: #e3ebe5;
   --border: #ddd6cb;
   --radius: 12px;
