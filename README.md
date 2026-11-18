@@ -1,10 +1,44 @@
 # Quietfield Goods — Nuxt 3 storefront demo
 
-A small, fast storefront built with **Nuxt 3**, TypeScript and Pinia. Fictional products, no real orders —
-a personal portfolio project by Serghei Gomco. The goal was a fully static shop that scores 95+ in Lighthouse
-(mobile) with zero layout shift; see [REPORT.md](REPORT.md) for the measurements.
+A small static storefront built with **Nuxt 3**, TypeScript and Pinia. Fictional products, no real orders —
+a personal portfolio project by Serghei Gomco. **Live demo:** https://nuxt-store-kappa.vercel.app
 
-**Live demo:** https://nuxt-store-kappa.vercel.app
+## Performance case: before and after
+
+**The problem.** Opening a filtered catalogue link directly (`/?category=desk`, the kind of link people share or
+get from an ad) showed the full grid for a moment and then collapsed it to 3 products — the page visibly jumped.
+Every page also downloaded more than it needed.
+
+**What I found.** The site is static, so the server never sees `?category=`: the HTML always contains all 12
+products, and Vue applies the filter only after it starts. That jump alone took the page from 100 to 82 in
+Lighthouse (CLS 0.352). Separately, Nuxt was fetching a `_payload.json` for every page and prefetching the code and
+data of every product linked in the grid as soon as it scrolled into view.
+
+**What I changed.** A one-line inline script in `<head>` reads the category before the first paint and CSS hides the
+other cards, so the first paint is already the filtered grid. Payload files are off (the app has no fetched data to
+put in them), and links prefetch on hover/tap instead of on visibility. Only the first two grid images are high
+priority instead of four.
+
+**Result.** Lighthouse 13.6.0, mobile preset, local static build, median of 3 runs per page (18 Nov 2026):
+
+| Page | | Performance | LCP | CLS | TBT | JS transferred | Requests |
+|---|---|---|---|---|---|---|---|
+| `/?category=desk` (direct visit) | before | 82 | 2.0 s | **0.352** | 19 ms | 80.6 KiB | 34 |
+| | after | **100** | 1.8 s | **0** | 2 ms | 77.4 KiB | 13 |
+| `/` (catalogue) | before | 99 | 2.0 s | 0 | 1 ms | 80.6 KiB | 35 |
+| | after | 100 | 1.8 s | 0 | 0 ms | 77.4 KiB | 18 |
+| `/products/stoneware-mug` | before | 100 | 0.6 s | 0 | 0 ms | 80.6 KiB | 17 |
+| | after | 100 | 0.6 s | 0 | 41 ms | 76.9 KiB | 7 |
+
+The fix that matters for users is the first one: the layout jump on filtered links is gone. The payload/prefetch
+change roughly halves the number of requests but moves the scores very little — on a site this small there was not
+much to win. TBT differences of a few tens of ms are run-to-run noise.
+
+The [`before` branch](https://github.com/serghei-gomco/nuxt-store/tree/before) is the same store with these fixes
+removed. It was reconstructed from the finished store for this comparison, not kept from an earlier stage. Full
+method, raw numbers and caveats: [REPORT.md](REPORT.md).
+
+## What is in the store
 
 - Catalogue grid with a category filter in the URL (`/?category=kitchen`)
 - Product pages `/products/[slug]`, all prerendered
@@ -53,6 +87,5 @@ Any other static host works the same way: run `npm run generate` and upload `.ou
 
 ## Notes
 
-- The site is fully static, so the server never sees `?category=`. A direct visit to a filtered URL is handled
-  without layout shift by a tiny inline script; details in [EXPLAIN.md](EXPLAIN.md) (Russian) and REPORT.md.
+- The inline category script is explained, with its trade-offs, in [EXPLAIN.md](EXPLAIN.md) (Russian) and REPORT.md.
 - There is no checkout: the cart only lives in the browser.
